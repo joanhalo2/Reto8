@@ -19,6 +19,7 @@ public class EmpresasActivity extends AppCompatActivity {
         setContentView(R.layout.activity_empresas);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
         EmpresasFragment fragment = (EmpresasFragment)

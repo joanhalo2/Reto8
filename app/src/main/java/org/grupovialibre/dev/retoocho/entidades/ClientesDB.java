@@ -71,10 +71,10 @@ public class ClientesDB {
     }
 
     //Actualizar en la DB
-    public int updateEmpresa(Empresa empresa) {
+    public int updateEmpresa(Empresa empresa,String e_id) {
         this.openWriteableDB();
         String where = ConstantesDB.EMPRE_ID + "= ?";
-        return db.update(ConstantesDB.TABLA_EMPRESAS, clienteMapperContentValues(empresa), where, new String[]{String.valueOf(empresa.getId())});
+        return db.update(ConstantesDB.TABLA_EMPRESAS, clienteMapperContentValues(empresa), where, new String[]{e_id});
         //db.close();
     }
 

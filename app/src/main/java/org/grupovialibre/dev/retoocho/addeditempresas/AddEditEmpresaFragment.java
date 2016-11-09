@@ -2,6 +2,7 @@ package org.grupovialibre.dev.retoocho.addeditempresas;
 
 
 import android.app.Activity;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import org.grupovialibre.dev.retoocho.R;
+import org.grupovialibre.dev.retoocho.empresadetail.EmpresaDetailFragment;
 import org.grupovialibre.dev.retoocho.entidades.ClientesDB;
 import org.grupovialibre.dev.retoocho.entidades.Empresa;
 import org.grupovialibre.dev.retoocho.entidades.TipoEmpresa;
@@ -119,7 +121,7 @@ public class AddEditEmpresaFragment extends Fragment {
         protected Boolean doInBackground(Empresa... empresas) {
             if (mEmpresaId != null) {
                 //return mEmpresasDbHelper.updateEmpresa(empresas[0], mEmpresaId); > 0;
-                return mEmpresasDbHelper.updateEmpresa(empresas[0]) > 0;
+                return mEmpresasDbHelper.updateEmpresa(empresas[0],mEmpresaId) > 0;
 
             } else {
                 return mEmpresasDbHelper.insertEmpresa(empresas[0]) > 0;
@@ -150,8 +152,43 @@ public class AddEditEmpresaFragment extends Fragment {
     }
 
     private void loadEmpresa() {
-        // AsyncTask
+        new GetEmpresaByIdTask().execute();
     }
+
+
+    private void showEmpresa(Empresa empresa) {
+        mNameField.setText(empresa.getNombre());
+        mURLField.setText(empresa.getUrl());
+        mPhoneNumberField.setText(empresa.getTelefono());
+        mEmailField.setText(empresa.getEmail());
+        mProductsField.setText(empresa.getProductos_servicios());
+        mTipoEmpresaField.setText(String.valueOf(empresa.getTipoEmpresa().getId()));
+    }
+
+    private void showLoadError() {
+        Toast.makeText(getActivity(),
+                "Error al cargar información", Toast.LENGTH_SHORT).show();
+    }
+
+    private class GetEmpresaByIdTask extends AsyncTask<Void, Void, Cursor> {
+
+        @Override
+        protected Cursor doInBackground(Void... voids) {
+            return mEmpresasDbHelper.getEmpresasById(mEmpresaId);
+        }
+
+        @Override
+        protected void onPostExecute(Cursor cursor) {
+            if (cursor != null && cursor.moveToLast()) {
+                showEmpresa(new Empresa(cursor));
+            } else {
+                showLoadError();
+            }
+        }
+
+    }
+
+
 
     private void addEditEmpresa() {
         boolean error = false;

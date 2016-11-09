@@ -98,4 +98,6 @@
     </string>
     <string name="action_edit">Editar</string>
     <string name="action_delete">Eliminar</string>
+    <string name="action_search">Buscar</string>
+    <string name="action_filter">Filtrar</string>
 </resources>
